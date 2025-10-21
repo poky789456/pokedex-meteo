@@ -34,4 +34,3 @@ npm test
 ## Remarques
 - Géocodage Open‑Meteo: `https://geocoding-api.open-meteo.com/v1/search?name=Paris&count=1&language=fr`
 - Météo courante: `https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&current=weather_code,precipitation`
-- Aucune clé API requise pour usage non‑commercial.
