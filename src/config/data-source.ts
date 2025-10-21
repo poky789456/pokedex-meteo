@@ -16,6 +16,6 @@ export const AppDataSource = new DataSource({
 export async function initDataSource() {
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
-    console.log('✅ MongoDB connected via TypeORM');
+    console.log('MongoDB connecté via TypeORM');
   }
 }

@@ -9,7 +9,7 @@ async function main() {
   await redisClient.connect();
   const app = createApp();
   app.listen(PORT, () => {
-    console.log(`🚀 API listening on http://localhost:${PORT}`);
+    console.log(`API listening on http://localhost:${PORT}`);
   });
 }
 
