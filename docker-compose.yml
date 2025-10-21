@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  api:
+    build: .
+    container_name: pokedex-api
+    env_file: .env
+    ports:
+      - "${PORT:-3000}:3000"
+    depends_on:
+      - mongo
+      - redis
+  mongo:
+    image: mongo:7
+    container_name: pokedex-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+  redis:
+    image: redis:7-alpine
+    container_name: pokedex-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+volumes:
+  mongo_data:
