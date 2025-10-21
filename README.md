@@ -28,7 +28,7 @@ npm run dev
 
 ## Tests
 ```bash
-npm test
+npm run test
 ```
 
 ## Remarques
