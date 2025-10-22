@@ -1,0 +1,71 @@
+version: "3.9"
+
+# Production app: API + Datastores
+# docker compose -f docker-compose.prod.app.yml up -d --build
+services:
+  api:
+    build: .
+    image: pokedex-api:latest
+    env_file: .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - redis
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/health',res=>process.exit(res.statusCode===200?0:1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+    restart: always
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  mongo:
+    image: mongo:7
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=pokedex
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 1G
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    restart: always
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 20
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
+volumes:
+  mongo_data:
+  redis_data:
